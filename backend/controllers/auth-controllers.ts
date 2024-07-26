@@ -1,9 +1,10 @@
 import bcrypt from "bcryptjs";
+import { Request, Response } from "express";
 
-import User from "../models/user-models.js";
-import generateTokenAndSetCookie from "../utils/generate-token.js";
+import User from "../models/user-model";
+import generateTokenAndSetCookie from "../utils/generate-token";
 
-export const login = async (req, res) => {
+export const login = async (req: Request, res: Response) => {
   try {
     const { username, password } = req.body;
     const user = await User.findOne({ username });
@@ -25,13 +26,13 @@ export const login = async (req, res) => {
       username: user.username,
       profilePic: user.profilePic,
     });
-  } catch (error) {
-    console.log("Login error", error.message);
+  } catch (error: any) {
+    console.log("Login error:", error.message);
     return res.status(500).json({ error: "Internal Server Error" });
   }
 };
 
-export const signup = async (req, res) => {
+export const signup = async (req: Request, res: Response) => {
   try {
     const { name, username, password, confirmPassword, gender } = req.body;
 
@@ -73,18 +74,18 @@ export const signup = async (req, res) => {
     } else {
       return res.status(400).json({ error: "Invalid user data" });
     }
-  } catch (error) {
-    console.log("Signup error", error.message);
+  } catch (error: any) {
+    console.log("Signup error:", error.message);
     return res.status(500).json({ error: "Internal Server Error" });
   }
 };
 
-export const logout = async (req, res) => {
+export const logout = async (req: Request, res: Response) => {
   try {
     res.cookie("jwt", "", { maxAge: 0 });
     res.status(200).json({ message: "Logged out successfully" });
-  } catch (error) {
-    console.log("Logout error", error.message);
+  } catch (error: any) {
+    console.log("Logout error:", error.message);
     return res.status(500).json({ error: "Internal Server Error" });
   }
 };
