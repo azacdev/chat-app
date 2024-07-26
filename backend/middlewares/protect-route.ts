@@ -1,7 +1,18 @@
+import mongoose from "mongoose";
+import { NextFunction, Request, Response } from "express";
 import jwt from "jsonwebtoken";
-import User from "../models/user-models";
 
-const protectRoute = async (req, res, next) => {
+import User from "../models/user-model";
+
+interface CustomRequest extends Request {
+  user?: mongoose.Document;
+}
+
+const protectRoute = async (
+  req: CustomRequest,
+  res: Response,
+  next: NextFunction
+) => {
   try {
     const token = req.cookies.jwt;
     if (!token) {
@@ -10,7 +21,13 @@ const protectRoute = async (req, res, next) => {
         .json({ error: "Unauthorised - No Token Provided" });
     }
 
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const secret = process.env.JWT_SECRET;
+
+    if (!secret) {
+      throw new Error("JWT_SECRET is not defined in the environment variables");
+    }
+
+    const decoded: any = jwt.verify(token, secret);
 
     if (!decoded) {
       return res.status(401).json({ error: "Unauthorised - Invalid Token" });
