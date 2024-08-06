@@ -11,6 +11,7 @@ const generateTokenAndSetCookie = (
   if (!secret) {
     throw new Error("JWT_SECRET is not defined in the environment variables");
   }
+
   const token = jwt.sign({ userId }, secret, {
     expiresIn: "15d",
   });
