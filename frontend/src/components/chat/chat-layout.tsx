@@ -27,7 +27,7 @@ export function ChatLayout({
   console.log(conversations);
 
   const [isCollapsed, setIsCollapsed] = React.useState(defaultCollapsed);
-  const [selectedUser, setSelectedUser] = React.useState(userData[0]);
+  // const [selectedUser, setSelectedUser] = React.useState(userData[0]);
   const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
@@ -92,8 +92,8 @@ export function ChatLayout({
       <ResizableHandle withHandle />
       <ResizablePanel defaultSize={defaultLayout[1]} minSize={30}>
         <Chat
-          messages={selectedUser.messages}
-          selectedUser={selectedUser}
+          // messages={selectedUser.messages}
+          // selectedUser={selectedUser}
           isMobile={isMobile}
         />
       </ResizablePanel>

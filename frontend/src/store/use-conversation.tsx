@@ -9,14 +9,20 @@ interface Conversation {
 }
 
 interface Message {
-  id: string;
+  _id: string;
+  senderId: string;
+  receiverId: string;
+  message: string;
+  createdAt: string;
+  updatedAt: string;
 }
 
 interface ConversationState {
   selectedConversation: Conversation | undefined;
   messages: Message[];
+  // messages: any;
   setSelectedConversation: (selectedConversation: Conversation) => void;
-  setMessages: (messages: Message[]) => void;
+  setMessages: (messages: any) => void;
 }
 
 const useConversation = create<ConversationState>((set) => ({

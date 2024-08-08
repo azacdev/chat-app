@@ -2,31 +2,29 @@ import { Link } from "react-router-dom";
 import { Info, Phone, Video } from "lucide-react";
 
 import { cn } from "@/lib/utils";
-import { UserData } from "@/config/data";
 import { buttonVariants } from "@/components/ui/button";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
-
-interface ChatTopbarProps {
-  selectedUser: UserData;
-}
+import useConversation from "@/store/use-conversation";
 
 export const TopbarIcons = [{ icon: Phone }, { icon: Video }, { icon: Info }];
 
-export default function ChatTopbar({ selectedUser }: ChatTopbarProps) {
+export default function ChatTopbar() {
+  const { selectedConversation, setSelectedConversation } = useConversation();
+
   return (
     <div className="w-full h-20 flex p-4 justify-between items-center border-b">
       <div className="flex items-center gap-2">
         <Avatar className="flex justify-center items-center">
           <AvatarImage
-            src={selectedUser.avatar}
-            alt={selectedUser.name}
+            src={selectedConversation?.profilePic}
+            alt={selectedConversation?.name}
             width={6}
             height={6}
             className="w-10 h-10 "
           />
         </Avatar>
         <div className="flex flex-col">
-          <span className="font-medium">{selectedUser.name}</span>
+          <span className="font-medium">{selectedConversation?.name}</span>
           <span className="text-xs">Active 2 mins ago</span>
         </div>
       </div>

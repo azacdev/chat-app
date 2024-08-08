@@ -1,23 +1,17 @@
-import { Message, UserData } from "../../config/data";
-import { cn } from "@/lib/utils";
 import React, { useRef } from "react";
-import { Avatar, AvatarImage } from "../ui/avatar";
+import { AnimatePresence } from "framer-motion";
+
+import GetMessages from "@/hooks/get-messages";
 import ChatBottombar from "./chat-bottombar";
-import { AnimatePresence, motion } from "framer-motion";
+import MessageSkeleton from "../skeletons/message-skeleton";
+import Messages from "./messages";
 
 interface ChatListProps {
-  messages?: Message[];
-  selectedUser: UserData;
-  sendMessage: (newMessage: Message) => void;
   isMobile: boolean;
 }
 
-export function ChatList({
-  messages,
-  selectedUser,
-  sendMessage,
-  isMobile,
-}: ChatListProps) {
+export function ChatList({ isMobile }: ChatListProps) {
+  const { loading, messages } = GetMessages();
   const messagesContainerRef = useRef<HTMLDivElement>(null);
 
   React.useEffect(() => {
@@ -33,61 +27,27 @@ export function ChatList({
         ref={messagesContainerRef}
         className="w-full overflow-y-auto overflow-x-hidden h-full flex flex-col"
       >
-        <AnimatePresence>
-          {messages?.map((message, index) => (
-            <motion.div
-              key={index}
-              layout
-              initial={{ opacity: 0, scale: 1, y: 50, x: 0 }}
-              animate={{ opacity: 1, scale: 1, y: 0, x: 0 }}
-              exit={{ opacity: 0, scale: 1, y: 1, x: 0 }}
-              transition={{
-                opacity: { duration: 0.1 },
-                layout: {
-                  type: "spring",
-                  bounce: 0.3,
-                  duration: messages.indexOf(message) * 0.05 + 0.2,
-                },
-              }}
-              style={{
-                originX: 0.5,
-                originY: 0.5,
-              }}
-              className={cn(
-                "flex flex-col gap-2 p-4 whitespace-pre-wrap",
-                message.name !== selectedUser.name ? "items-end" : "items-start"
-              )}
-            >
-              <div className="flex gap-3 items-center">
-                {message.name === selectedUser.name && (
-                  <Avatar className="flex justify-center items-center">
-                    <AvatarImage
-                      src={message.avatar}
-                      alt={message.name}
-                      width={6}
-                      height={6}
-                    />
-                  </Avatar>
-                )}
-                <span className=" bg-accent p-3 rounded-md max-w-xs">
-                  {message.message}
-                </span>
-                {message.name !== selectedUser.name && (
-                  <Avatar className="flex justify-center items-center">
-                    <AvatarImage
-                      src={message.avatar}
-                      alt={message.name}
-                      width={6}
-                      height={6}
-                    />
-                  </Avatar>
-                )}
-              </div>
-            </motion.div>
-          ))}
-        </AnimatePresence>
+        {loading && <MessageSkeleton />}
+        {!loading && messages.length === 0 && (
+          <div className="flex justify-center items-center h-full">
+            <p className="text-xl font-semibold text-center">
+              Send a message to start a conversation
+            </p>
+          </div>
+        )}
+        {!loading && messages.length > 0 && (
+          <AnimatePresence>
+            {messages?.map((message: any, index: number) => (
+              <Messages
+                message={message}
+                key={index}
+                duration={messages.indexOf(message) * 0.05 + 0.2}
+              />
+            ))}
+          </AnimatePresence>
+        )}
       </div>
-      <ChatBottombar sendMessage={sendMessage} isMobile={isMobile} />
+      <ChatBottombar isMobile={isMobile} />
     </div>
   );
 }

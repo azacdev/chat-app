@@ -28,12 +28,13 @@ export function Sidebar({ links, isCollapsed }: SidebarProps) {
       data-collapsed={isCollapsed}
       className="relative group flex flex-col h-full gap-4 p-2 data-[collapsed=true]:p-2 "
     >
-      <form className="flex items-center gap-2">
+      <form className={`${isCollapsed ? "hidden" : "flex"} items-center gap-2`}>
         <Input type="text" placeholder="Search..." className="text-black" />
         <Button type="submit">
           <Search />
         </Button>
       </form>
+
       {!isCollapsed && (
         <div className="flex justify-between p-2 items-center">
           <div className="flex gap-2 items-center text-2xl">
@@ -72,7 +73,7 @@ export function Sidebar({ links, isCollapsed }: SidebarProps) {
           ))}
       </nav>
 
-      <div className="mt-auto p-2">
+      <div className="mt-auto p-2 pb-4">
         <LogOut className="h-6 w-6 cursor-pointer" onClick={() => logout()} />
       </div>
     </div>

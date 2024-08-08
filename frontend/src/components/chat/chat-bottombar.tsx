@@ -4,30 +4,31 @@ import {
   Paperclip,
   PlusCircle,
   SendHorizontal,
-  Smile,
   ThumbsUp,
 } from "lucide-react";
-import { Link } from "react-router-dom";
-import React, { useRef, useState } from "react";
-import { buttonVariants } from "../ui/button";
-import { cn } from "@/lib/utils";
 import { AnimatePresence, motion } from "framer-motion";
-import { Message, loggedInUserData } from "../../config/data";
-import { Textarea } from "../ui/textarea";
-import { EmojiPicker } from "../emoji-picker";
-import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
+import React, { useRef, useState } from "react";
+import { Link } from "react-router-dom";
 
+import GetSendMessage from "@/hooks/get-send-message";
+import { buttonVariants } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
+import { Message, loggedInUserData } from "@/config/data";
+import { Textarea } from "@/components/ui/textarea";
+import { EmojiPicker } from "@/components/emoji-picker";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 interface ChatBottombarProps {
-  sendMessage: (newMessage: Message) => void;
   isMobile: boolean;
 }
 
 export const BottombarIcons = [{ icon: FileImage }, { icon: Paperclip }];
 
-export default function ChatBottombar({
-  sendMessage,
-  isMobile,
-}: ChatBottombarProps) {
+export default function ChatBottombar({ isMobile }: ChatBottombarProps) {
+  const { sendMessage } = GetSendMessage();
   const [message, setMessage] = useState("");
   const inputRef = useRef<HTMLTextAreaElement>(null);
 
@@ -36,25 +37,14 @@ export default function ChatBottombar({
   };
 
   const handleThumbsUp = () => {
-    const newMessage: Message = {
-      id: message.length + 1,
-      name: loggedInUserData.name,
-      avatar: loggedInUserData.avatar,
-      message: "👍",
-    };
-    sendMessage(newMessage);
-    setMessage("");
+    sendMessage("👍");
   };
 
-  const handleSend = () => {
+  const handleSend = async () => {
     if (message.trim()) {
-      const newMessage: Message = {
-        id: message.length + 1,
-        name: loggedInUserData.name,
-        avatar: loggedInUserData.avatar,
-        message: message.trim(),
-      };
-      sendMessage(newMessage);
+      console.log(message);
+
+      await sendMessage(message);
       setMessage("");
 
       if (inputRef.current) {
@@ -63,7 +53,9 @@ export default function ChatBottombar({
     }
   };
 
-  const handleKeyPress = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
+  const handleKeyPress = async (
+    event: React.KeyboardEvent<HTMLTextAreaElement>
+  ) => {
     if (event.key === "Enter" && !event.shiftKey) {
       event.preventDefault();
       handleSend();
