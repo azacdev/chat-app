@@ -13,8 +13,13 @@ interface ChatListProps {
 export function ChatList({ isMobile }: ChatListProps) {
   const { loading, messages } = GetMessages();
   const messagesContainerRef = useRef<HTMLDivElement>(null);
+  const lastMessageRef = useRef<HTMLDivElement>(null);
 
   React.useEffect(() => {
+    setTimeout(() => {
+      lastMessageRef.current?.scrollIntoView({ behavior: "smooth" });
+    }, 100);
+
     if (messagesContainerRef.current) {
       messagesContainerRef.current.scrollTop =
         messagesContainerRef.current.scrollHeight;
@@ -38,11 +43,12 @@ export function ChatList({ isMobile }: ChatListProps) {
         {!loading && messages.length > 0 && (
           <AnimatePresence>
             {messages?.map((message: any, index: number) => (
-              <Messages
-                message={message}
-                key={index}
-                duration={messages.indexOf(message) * 0.05 + 0.2}
-              />
+              <div ref={lastMessageRef} key={index}>
+                <Messages
+                  message={message}
+                  duration={messages.indexOf(message) * 0.05 + 0.2}
+                />
+              </div>
             ))}
           </AnimatePresence>
         )}
