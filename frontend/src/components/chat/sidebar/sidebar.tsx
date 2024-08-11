@@ -6,6 +6,10 @@ import { cn } from "@/lib/utils";
 import GetLogout from "@/hooks/get-logout";
 import { Input } from "@/components/ui/input";
 import { Button, buttonVariants } from "@/components/ui/button";
+import { useState } from "react";
+import { toast } from "sonner";
+import useConversation from "@/store/use-conversation";
+import GetConversations from "@/hooks/get-convesations";
 
 interface SidebarProps {
   isCollapsed: boolean;
@@ -22,18 +26,50 @@ interface SidebarProps {
 
 export function Sidebar({ links, isCollapsed }: SidebarProps) {
   const { logout } = GetLogout();
+  const { setSelectedConversation } = useConversation();
+  const { conversations } = GetConversations();
 
+  const [search, setSearch] = useState("");
+
+  const handleSubmit = (e: any) => {
+    e.preventDefault();
+    if (!search) return;
+    if (search.length < 3) {
+      return toast.error("Search term must be at least 3 characters long.");
+    }
+
+    const conversation = conversations.find((item: any) =>
+      item.name.toLowerCase().includes(search.toLowerCase())
+    );
+
+    if (conversation) {
+      setSelectedConversation(conversation);
+      setSearch("");
+    } else {
+      toast.error("User not found!");
+    }
+  };
+  
   return (
     <div
       data-collapsed={isCollapsed}
       className="relative group flex flex-col h-full gap-4 p-2 data-[collapsed=true]:p-2 "
     >
-      <form className="flex items-center gap-2">
-        <Input type="text" placeholder="Search..." className="text-black" />
+      <form
+        onSubmit={handleSubmit}
+        className={`${isCollapsed ? "hidden" : "flex"} items-center gap-2`}
+      >
+        <Input
+          type="text"
+          placeholder="Search..."
+          className="text-black"
+          onChange={(e) => setSearch(e.target.value)}
+        />
         <Button type="submit">
           <Search />
         </Button>
       </form>
+
       {!isCollapsed && (
         <div className="flex justify-between p-2 items-center">
           <div className="flex gap-2 items-center text-2xl">
@@ -72,7 +108,7 @@ export function Sidebar({ links, isCollapsed }: SidebarProps) {
           ))}
       </nav>
 
-      <div className="mt-auto p-2">
+      <div className="mt-auto p-2 pb-4">
         <LogOut className="h-6 w-6 cursor-pointer" onClick={() => logout()} />
       </div>
     </div>
