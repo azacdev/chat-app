@@ -5,6 +5,7 @@ import { cn, formatDate } from "@/lib/utils";
 import useConversation from "@/store/use-conversation";
 import { useAuthContext } from "@/context/auth-context";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
+import useListenMessage from "@/hooks/get-listen-message";
 
 interface MessagesProp {
   message: any;
@@ -14,6 +15,7 @@ interface MessagesProp {
 const Messages = ({ message, duration }: MessagesProp) => {
   const { authUser } = useAuthContext();
   const { selectedConversation } = useConversation();
+  useListenMessage();
 
   const currentUser = authUser?._id === message.senderId;
   const profilePic = currentUser
