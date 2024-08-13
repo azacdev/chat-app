@@ -9,7 +9,7 @@ import useConversation from "@/store/use-conversation";
 export const TopbarIcons = [{ icon: Phone }, { icon: Video }, { icon: Info }];
 
 export default function ChatTopbar() {
-  const { selectedConversation, setSelectedConversation } = useConversation();
+  const { selectedConversation } = useConversation();
 
   return (
     <div className="w-full h-20 flex p-4 justify-between items-center border-b">

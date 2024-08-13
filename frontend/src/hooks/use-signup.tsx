@@ -4,7 +4,7 @@ import { SignupSchema } from "@/schemas";
 import { useAuthContext } from "@/context/auth-context";
 import { toast } from "sonner";
 
-const GetSignup = () => {
+const useSignup = () => {
   const { setAuthUser } = useAuthContext();
 
   const signup = async (values: z.infer<typeof SignupSchema>) => {
@@ -47,7 +47,6 @@ const GetSignup = () => {
       setAuthUser(data);
       console.log(data);
     } catch (error: any) {
-      toast.error(error.message);
       console.log(error);
     }
   };
@@ -55,4 +54,4 @@ const GetSignup = () => {
   return { signup };
 };
 
-export default GetSignup;
+export default useSignup;

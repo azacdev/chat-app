@@ -5,7 +5,7 @@ import { BrowserRouter } from "react-router-dom";
 import App from "@/App.tsx";
 import { SocketContextProvider } from "@/context/socket-context.tsx";
 import { AuthContextProvider } from "@/context/auth-context.tsx";
-import { Toaster } from "@/components/ui/sonner";
+import { Toaster } from "sonner";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>

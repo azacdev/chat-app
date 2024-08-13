@@ -1,7 +1,6 @@
 import useConversation from "@/store/use-conversation";
-import { toast } from "sonner";
 
-const GetSendMessage = () => {
+const useSendMessage = () => {
   const { messages, setMessages, selectedConversation } = useConversation();
 
   const sendMessage = async (message: string) => {
@@ -26,7 +25,6 @@ const GetSendMessage = () => {
       console.log(data);
       setMessages([...messages, data]);
     } catch (error: any) {
-      toast.error(error.message);
       console.log(error);
     }
   };
@@ -34,4 +32,4 @@ const GetSendMessage = () => {
   return { sendMessage };
 };
 
-export default GetSendMessage;
+export default useSendMessage;

@@ -1,6 +1,6 @@
 import { create } from "zustand";
 
-interface Conversation {
+export interface Conversation {
   _id: string;
   name: string;
   username: string;
@@ -8,7 +8,7 @@ interface Conversation {
   gender: string;
 }
 
-interface Message {
+export interface Message {
   _id: string;
   senderId: string;
   receiverId: string;
@@ -18,21 +18,14 @@ interface Message {
 }
 
 interface ConversationState {
-  selectedConversation: Conversation | undefined;
+  selectedConversation: Conversation | null;
   messages: Message[];
-  // messages: any;
-  setSelectedConversation: (selectedConversation: Conversation) => void;
+  setSelectedConversation: (selectedConversation: Conversation | null) => void;
   setMessages: (messages: any) => void;
 }
 
 const useConversation = create<ConversationState>((set) => ({
-  selectedConversation: {
-    _id: "",
-    name: "",
-    username: "",
-    profilePic: "",
-    gender: "",
-  },
+  selectedConversation: null,
   setSelectedConversation: (selectedConversation: any) =>
     set({ selectedConversation }),
   messages: [],

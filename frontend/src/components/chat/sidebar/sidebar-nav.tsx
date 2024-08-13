@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
 import { buttonVariants } from "@/components/ui/button";
+import { useSocketContext } from "@/context/socket-context";
 
 interface SidebarNavProps {
   link: {
@@ -25,8 +26,10 @@ interface SidebarNavProps {
 const SidebarNav = ({ link, isCollapsed }: SidebarNavProps) => {
   const { selectedConversation, setSelectedConversation } = useConversation();
 
-  // @ts-ignore
-  const isSelected = selectedConversation._id === link._id;
+  const { onlineUsers } = useSocketContext();
+  const isOnline = onlineUsers.includes(link._id);
+
+  const isSelected = selectedConversation?._id === link._id;
 
   return (
     <>
@@ -47,15 +50,23 @@ const SidebarNav = ({ link, isCollapsed }: SidebarNavProps) => {
                   "h-11 w-11 md:h-16 md:w-16 dark:bg-muted dark:text-muted-foreground dark:hover:bg-muted dark:hover:text-white"
                 )}
               >
-                <Avatar className="flex justify-center items-center">
-                  <AvatarImage
-                    src={link.profilePic}
-                    alt={link.profilePic}
-                    width={6}
-                    height={6}
-                    className="w-10 h-10 "
+                <div className="relative">
+                  <Avatar className="flex justify-center items-center">
+                    <AvatarImage
+                      src={link.profilePic}
+                      alt={link.profilePic}
+                      width={6}
+                      height={6}
+                      className="w-10 h-10"
+                    />
+                  </Avatar>
+                  <div
+                    className={`${
+                      isOnline ? "absolute" : "hidden"
+                    } absolute top-0 right-0 z-10 flex rounded-full w-3 h-3 border border-black bg-green-500`}
                   />
-                </Avatar>{" "}
+                </div>
+
                 <span className="sr-only">{link.name}</span>
               </Link>
             </TooltipTrigger>
@@ -77,15 +88,22 @@ const SidebarNav = ({ link, isCollapsed }: SidebarNavProps) => {
           )}
           onClick={() => setSelectedConversation(link)}
         >
-          <Avatar className="flex justify-center items-center">
-            <AvatarImage
-              src={link.profilePic}
-              alt={link.profilePic}
-              width={6}
-              height={6}
-              className="w-10 h-10 "
+          <div className="relative">
+            <Avatar className="flex justify-center items-center">
+              <AvatarImage
+                src={link.profilePic}
+                alt={link.profilePic}
+                width={6}
+                height={6}
+                className="w-10 h-10"
+              />
+            </Avatar>
+            <div
+              className={`${
+                isOnline ? "absolute" : "hidden"
+              } absolute top-0 right-0 z-10 flex rounded-full w-3 h-3 border border-black bg-green-500`}
             />
-          </Avatar>
+          </div>
           <div className="flex flex-col max-w-28">
             <span className="capitalize">{link.name}</span>
           </div>

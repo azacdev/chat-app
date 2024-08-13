@@ -3,6 +3,7 @@ import { Request, Response } from "express";
 
 import Conversation from "../models/conversation-model";
 import Message from "../models/message-model";
+import { getReceiverSocketId, io } from "../socket/socket";
 
 interface CustomRequest extends Request {
   user?: mongoose.Document;
@@ -34,9 +35,13 @@ export const sendMessage = async (req: CustomRequest, res: Response) => {
       conversation.messages.push(newMessage._id);
     }
 
-    // socket io functionality
-
     await Promise.all([conversation.save(), newMessage.save()]);
+
+    // socket io functionality
+    const receiverSocketId = getReceiverSocketId(receiverId);
+    if (receiverSocketId) {
+      io.to(receiverSocketId).emit("newMessage", newMessage);
+    }
 
     return res.status(201).json(newMessage);
   } catch (error: any) {

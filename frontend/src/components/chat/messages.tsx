@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
-import { format } from "date-fns";
 
 import { cn, formatDate } from "@/lib/utils";
+import useListenMessage from "@/hooks/use-listen-message";
 import useConversation from "@/store/use-conversation";
 import { useAuthContext } from "@/context/auth-context";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
@@ -14,6 +14,7 @@ interface MessagesProp {
 const Messages = ({ message, duration }: MessagesProp) => {
   const { authUser } = useAuthContext();
   const { selectedConversation } = useConversation();
+  useListenMessage();
 
   const currentUser = authUser?._id === message.senderId;
   const profilePic = currentUser
@@ -54,10 +55,20 @@ const Messages = ({ message, duration }: MessagesProp) => {
             />
           </Avatar>
         )}
-        <p className="flex flex-col bg-accent p-3 rounded-md max-w-xs">
-          {message.message}
-          <span className="text-xs">{formatDate(message.createdAt)}</span>
-        </p>
+        <div className="flex flex-col">
+          <p className="flex flex-col bg-accent p-3 rounded-md max-w-xs">
+            {message.message}
+          </p>
+          <p
+            className={`${
+              currentUser
+                ? "justify-end items-end"
+                : "justify-start items-start"
+            } flex text-xs pt-1`}
+          >
+            {formatDate(message.createdAt)}
+          </p>
+        </div>
         {message.senderId === authUser?._id && (
           <Avatar className="flex justify-center items-center">
             <AvatarImage

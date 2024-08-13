@@ -2,9 +2,8 @@ import * as z from "zod";
 
 import { LoginSchema } from "@/schemas";
 import { useAuthContext } from "@/context/auth-context";
-import { toast } from "sonner";
 
-const GetLogin = () => {
+const useLogin = () => {
   const { setAuthUser } = useAuthContext();
 
   const login = async (values: z.infer<typeof LoginSchema>) => {
@@ -36,7 +35,6 @@ const GetLogin = () => {
       setAuthUser(data);
       console.log(data);
     } catch (error: any) {
-      toast.error(error.message);
       console.log(error);
     }
   };
@@ -44,4 +42,4 @@ const GetLogin = () => {
   return { login };
 };
 
-export default GetLogin;
+export default useLogin;

@@ -5,7 +5,7 @@ import { useTransition } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import { SignupSchema } from "@/schemas";
-import GetSignup from "@/hooks/get-signup";
+import useSignup from "@/hooks/use-signup";
 import {
   Form,
   FormControl,
@@ -21,7 +21,7 @@ import { Button } from "@/components/ui/button";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 
 export const SignupForm = () => {
-  const { signup } = GetSignup();
+  const { signup } = useSignup();
   const [isPending, startTransition] = useTransition();
 
   const form = useForm<z.infer<typeof SignupSchema>>({

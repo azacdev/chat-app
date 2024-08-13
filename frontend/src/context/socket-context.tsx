@@ -1,14 +1,14 @@
-import { useState, createContext, useEffect } from "react";
+import { useState, createContext, useEffect, useContext } from "react";
 import io, { Socket } from "socket.io-client";
 
 import { useAuthContext } from "./auth-context";
 
-interface SocketContextProps {
+interface SocketContextType {
   socket: Socket | null;
   onlineUsers: string[];
 }
 
-export const SocketContext = createContext<SocketContextProps | undefined>(
+export const SocketContext = createContext<SocketContextType | undefined>(
   undefined
 );
 
@@ -24,9 +24,15 @@ export const SocketContextProvider = ({
 
   useEffect(() => {
     if (authUser) {
-      const socketInstance = io("http://localhost:5000");
+      const socketInstance = io("http://localhost:5000", {
+        query: { userId: authUser._id },
+      });
 
       setSocket(socketInstance);
+
+      socketInstance.on("getOnlineUsers", (users) => {
+        setOnlineUsers(users);
+      });
 
       return () => {
         socketInstance.close();
@@ -37,11 +43,21 @@ export const SocketContextProvider = ({
         setSocket(null);
       }
     }
-  }, []);
+  }, [authUser]);
 
   return (
     <SocketContext.Provider value={{ socket, onlineUsers }}>
       {children}
     </SocketContext.Provider>
   );
+};
+
+export const useSocketContext = (): SocketContextType => {
+  const context = useContext(SocketContext);
+  if (context === undefined) {
+    throw new Error(
+      "useSocketContext must be used within an AuthContextProvider"
+    );
+  }
+  return context;
 };
