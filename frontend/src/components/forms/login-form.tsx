@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import { LoginSchema } from "@/schemas";
-import GetLogin from "@/hooks/get-login";
+import useLogin from "@/hooks/use-login";
 import {
   Form,
   FormControl,
@@ -18,7 +18,7 @@ import { CardWrapper } from "@/components/card-wrapper";
 import { Button } from "@/components/ui/button";
 
 export const LoginForm = () => {
-  const { login } = GetLogin();
+  const { login } = useLogin();
   const [isPending, startTransition] = useTransition();
 
   const form = useForm<z.infer<typeof LoginSchema>>({

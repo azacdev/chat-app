@@ -10,10 +10,9 @@ import { AnimatePresence, motion } from "framer-motion";
 import React, { useRef, useState } from "react";
 import { Link } from "react-router-dom";
 
-import GetSendMessage from "@/hooks/get-send-message";
-import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { Message, loggedInUserData } from "@/config/data";
+import useSendMessage from "@/hooks/use-send-message";
+import { buttonVariants } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { EmojiPicker } from "@/components/emoji-picker";
 import {
@@ -28,7 +27,7 @@ interface ChatBottombarProps {
 export const BottombarIcons = [{ icon: FileImage }, { icon: Paperclip }];
 
 export default function ChatBottombar({ isMobile }: ChatBottombarProps) {
-  const { sendMessage } = GetSendMessage();
+  const { sendMessage } = useSendMessage();
   const [message, setMessage] = useState("");
   const inputRef = useRef<HTMLTextAreaElement>(null);
 
@@ -42,8 +41,6 @@ export default function ChatBottombar({ isMobile }: ChatBottombarProps) {
 
   const handleSend = async () => {
     if (message.trim()) {
-      console.log(message);
-
       await sendMessage(message);
       setMessage("");
 

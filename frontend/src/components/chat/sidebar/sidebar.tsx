@@ -1,15 +1,15 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import { LogOut, MoreHorizontal, Search, SquarePen } from "lucide-react";
 
-import SidebarNav from "./sidebar-nav";
+import { toast } from "sonner";
 import { cn } from "@/lib/utils";
-import GetLogout from "@/hooks/get-logout";
+import useLogout from "@/hooks/use-logout";
+import GetConversations from "@/hooks/use-convesations";
+import useConversation from "@/store/use-conversation";
+import SidebarNav from "./sidebar-nav";
 import { Input } from "@/components/ui/input";
 import { Button, buttonVariants } from "@/components/ui/button";
-import { useState } from "react";
-import { toast } from "sonner";
-import useConversation from "@/store/use-conversation";
-import GetConversations from "@/hooks/get-convesations";
 
 interface SidebarProps {
   isCollapsed: boolean;
@@ -25,7 +25,7 @@ interface SidebarProps {
 }
 
 export function Sidebar({ links, isCollapsed }: SidebarProps) {
-  const { logout } = GetLogout();
+  const { logout } = useLogout();
   const { setSelectedConversation } = useConversation();
   const { conversations } = GetConversations();
 
@@ -49,7 +49,7 @@ export function Sidebar({ links, isCollapsed }: SidebarProps) {
       toast.error("User not found!");
     }
   };
-  
+
   return (
     <div
       data-collapsed={isCollapsed}

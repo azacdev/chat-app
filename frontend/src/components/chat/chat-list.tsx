@@ -1,17 +1,17 @@
 import React, { useRef } from "react";
 import { AnimatePresence } from "framer-motion";
 
-import GetMessages from "@/hooks/get-messages";
-import ChatBottombar from "./chat-bottombar";
-import MessageSkeleton from "../skeletons/message-skeleton";
+import useMessages from "@/hooks/use-messages";
 import Messages from "./messages";
+import ChatBottombar from "./chat-bottombar";
+import MessageSkeleton from "@/components/skeletons/message-skeleton";
 
 interface ChatListProps {
   isMobile: boolean;
 }
 
 export function ChatList({ isMobile }: ChatListProps) {
-  const { loading, messages } = GetMessages();
+  const { loading, messages } = useMessages();
   const messagesContainerRef = useRef<HTMLDivElement>(null);
   const lastMessageRef = useRef<HTMLDivElement>(null);
 

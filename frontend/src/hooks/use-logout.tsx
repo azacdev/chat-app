@@ -1,8 +1,6 @@
-import { toast } from "sonner";
-
 import { useAuthContext } from "@/context/auth-context";
 
-const GetLogout = () => {
+const useLogout = () => {
   const { setAuthUser } = useAuthContext();
   const logout = async () => {
     try {
@@ -20,7 +18,6 @@ const GetLogout = () => {
       localStorage.removeItem("user");
       setAuthUser(null);
     } catch (error: any) {
-      toast.error(error.message);
       console.log(error);
     }
   };
@@ -28,4 +25,4 @@ const GetLogout = () => {
   return { logout };
 };
 
-export default GetLogout;
+export default useLogout;

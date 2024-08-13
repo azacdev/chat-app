@@ -1,9 +1,8 @@
 import { useEffect, useState } from "react";
 
 import useConversation from "@/store/use-conversation";
-import { toast } from "sonner";
 
-const GetMessages = () => {
+const useMessages = () => {
   const { messages, setMessages, selectedConversation } = useConversation();
   const [loading, setLoading] = useState(false);
 
@@ -22,7 +21,6 @@ const GetMessages = () => {
         console.log(data);
         setMessages(data);
       } catch (error: any) {
-        toast.error(error.message);
         console.log(error);
       } finally {
         setLoading(false);
@@ -35,4 +33,4 @@ const GetMessages = () => {
   return { messages, loading };
 };
 
-export default GetMessages;
+export default useMessages;

@@ -1,8 +1,6 @@
 import { useEffect, useState } from "react";
 
-import { toast } from "sonner";
-
-const GetConversations = () => {
+const useConversations = () => {
   const [loading, setLoading] = useState(false);
   const [conversations, setConversations] = useState([]);
 
@@ -15,14 +13,10 @@ const GetConversations = () => {
 
         setConversations(data);
       } catch (error: any) {
-        toast.error(error.message);
-        console.log(error.message);
       } finally {
         setLoading(false);
       }
     };
-
-    console.log(conversations);
 
     getConversations();
   }, []);
@@ -30,4 +24,4 @@ const GetConversations = () => {
   return { loading, conversations };
 };
 
-export default GetConversations;
+export default useConversations;

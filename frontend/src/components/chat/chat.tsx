@@ -2,9 +2,9 @@ import { useEffect } from "react";
 import { MessageCircle } from "lucide-react";
 
 import useConversation from "@/store/use-conversation";
+import { useAuthContext } from "@/context/auth-context";
 import ChatTopbar from "./chat-topbar";
 import { ChatList } from "./chat-list";
-import { useAuthContext } from "@/context/auth-context";
 
 interface ChatProps {
   isMobile: boolean;
@@ -15,14 +15,7 @@ export function Chat({ isMobile }: ChatProps) {
   const { selectedConversation, setSelectedConversation } = useConversation();
 
   useEffect(() => {
-    return () =>
-      setSelectedConversation({
-        _id: "",
-        name: "",
-        username: "",
-        profilePic: "",
-        gender: "",
-      });
+    return () => setSelectedConversation(null);
   }, []);
 
   return (
@@ -37,7 +30,6 @@ export function Chat({ isMobile }: ChatProps) {
       ) : (
         <>
           <ChatTopbar />
-
           <ChatList isMobile={isMobile} />
         </>
       )}

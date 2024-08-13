@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
 
 import { cn } from "@/lib/utils";
-import { userData } from "@/config/data";
-import GetConversations from "@/hooks/get-convesations";
+import GetConversations from "@/hooks/use-convesations";
 import {
   ResizableHandle,
   ResizablePanel,

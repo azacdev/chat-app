@@ -29,8 +29,7 @@ const SidebarNav = ({ link, isCollapsed }: SidebarNavProps) => {
   const { onlineUsers } = useSocketContext();
   const isOnline = onlineUsers.includes(link._id);
 
-  // @ts-ignore
-  const isSelected = selectedConversation._id === link._id;
+  const isSelected = selectedConversation?._id === link._id;
 
   return (
     <>
