@@ -2,6 +2,7 @@ import * as z from "zod";
 
 import { LoginSchema } from "@/schemas";
 import { useAuthContext } from "@/context/auth-context";
+import { toast } from "sonner";
 
 const useLogin = () => {
   const { setAuthUser } = useAuthContext();
@@ -36,6 +37,7 @@ const useLogin = () => {
       console.log(data);
     } catch (error: any) {
       console.log(error);
+      toast.error(error.message);
     }
   };
 
