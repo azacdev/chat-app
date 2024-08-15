@@ -5,7 +5,7 @@
   "main": "index.ts",
   "scripts": {
     "start": "nodemon --exec ts-node index.ts",
-    "build": "npm install && npm install --prefix frontend && npm run build --prefix frontend"
+    "build": "tsc"
   },
   "keywords": [],
   "author": "",
