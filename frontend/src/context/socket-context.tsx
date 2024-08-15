@@ -24,7 +24,7 @@ export const SocketContextProvider = ({
 
   useEffect(() => {
     if (authUser) {
-      const socketInstance = io("https://chat-app-pf41.onrender.com", {
+      const socketInstance = io("https://chat-app-backend-ng.vercel.app", {
         query: { userId: authUser._id },
       });
 
