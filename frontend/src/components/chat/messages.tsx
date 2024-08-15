@@ -56,7 +56,7 @@ const Messages = ({ message, duration }: MessagesProp) => {
           </Avatar>
         )}
         <div className="flex flex-col">
-          <p className="flex flex-col bg-accent p-3 rounded-md max-w-xs">
+          <p className="flex flex-col bg-accent p-3 rounded-md max-w-xs break-words">
             {message.message}
           </p>
           <p
