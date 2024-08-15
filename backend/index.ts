@@ -25,13 +25,13 @@ app.use("/api/auth", authRoutes);
 app.use("/api/messages", messageRoutes);
 app.use("/api/users", usersRoutes);
 
-app.use(express.static(path.join(dirname, "../frontend/dist")));
+// app.use(express.static(path.join(dirname, "../frontend/dist")));
 
-app.get("*", (req: Request, res: Response) => {
-  res.sendFile(path.join(dirname, "../frontend", "dist", "index.html"));
-});
+// app.get("*", (req: Request, res: Response) => {
+//   res.sendFile(path.join(dirname, "../frontend", "dist", "index.html"));
+// });
 
-console.log("File Path", path.join(dirname, "../frontend/dist"));
+// console.log("File Path", path.join(dirname, "../frontend/dist"));
 
 server.listen(PORT, () => {
   connectToDB();
