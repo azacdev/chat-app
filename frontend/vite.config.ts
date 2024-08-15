@@ -13,7 +13,7 @@ export default defineConfig({
     proxy: {
       "/api": {
         // target: "http://localhost:5000",
-        target: "https://azacdev-chat-app-backend.vercel.app",
+        target: "https://chat-app-backend-ng.vercel.app",
       },
     },
   },
